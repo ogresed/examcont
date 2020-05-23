@@ -1,4 +1,4 @@
-package util;
+package utils;
 
 public class Constants {
     //начало всегда с \\, конец без \\

@@ -1,7 +1,7 @@
 import coordinates.Coordinates;
 import gui.card.ImageBounds;
 import gui.view.MonologueBar;
-import util.Constants;
+import utils.Constants;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

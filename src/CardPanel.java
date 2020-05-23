@@ -1,6 +1,6 @@
 import coordinates.Coordinates;
 import gui.view.StatusBar;
-import util.Constants;
+import utils.Constants;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

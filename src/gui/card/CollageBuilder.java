@@ -17,23 +17,30 @@ public class CollageBuilder {
 
     private static final int collageWidth = 5;
     private static final int collageHeight = 2;
+    private static final int collageSize = collageHeight * collageWidth;
 
     public CollageBuilder(String directoryName) {
         rootDirectory = new File(directoryName);
         cardsToCollage = new LinkedList<>();
         cards = new TreeMap<>();
+        usedDirs = new ArrayList<>();
     }
 
-    Map<String, Card> cards;
-    LinkedList<Card> cardsToCollage;
+    private Map<String, Card> cards;
+    private LinkedList<Card> cardsToCollage;
+    private ArrayList<String> usedDirs;
 
     public BufferedImage createCollage(String prefix) {
         File prefixRoot = getPrefixDir(prefix, rootDirectory);
         gatherCards(prefixRoot, prefix);
         // create result
+        usedDirs.clear();
         return imageSeed();
     }
 
+    /**
+     * возвращает папку, в которой хранятся все карточки, начинающиеся на {@param prefix}
+     * */
     private File getPrefixDir(String prefix, File dir) {
         if(prefix.equals("")) {
             return rootDirectory;
@@ -51,39 +58,58 @@ public class CollageBuilder {
         }
         return null;
     }
-
+    /**
+     * собирает все карточки
+     * */
     private void gatherCards(File dir, String prefix) {
         Stack<File> dirs = new Stack<>();
         dirs.push(dir);
         while (!dirs.isEmpty()) {
             File currentDir = dirs.pop();
-            String currentPath = currentDir.getAbsolutePath();
-            File description = new File(currentPath + "\\" + DESCRIPTION_FILE_NAME);
+            if(usedDirs.contains(currentDir.getName())) {
+                continue;
+            }
+            usedDirs.add(currentDir.getName());
 
-            try {
-                Scanner scanner = new Scanner(description);
-                while (scanner.hasNext()) {
-                    String record = scanner.nextLine();
-                    String[] nameAndDescription = record.split(" ");
-                    String name = nameAndDescription[0];
-                    String cardsDescription = "";
-                    try{
-                        cardsDescription = nameAndDescription[1];
-                    } catch(ArrayIndexOutOfBoundsException ignored) {}
-                    Card card = cards.get(name);
-                    if(card == null) {
-                        addCard(prefix, currentPath, name, cardsDescription);
-                    } else {
-                        cardsToCollage.add(card);
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            String currentPath = currentDir.getAbsolutePath();
+            File cardsListFile = new File(currentPath + "\\" + DESCRIPTION_FILE_NAME);
+
+            if(checkToStopAndGatherCardsByList(cardsListFile, prefix, currentPath)) {
+                return;
             }
             for (File file : Objects.requireNonNull(currentDir.listFiles(File::isDirectory))) {
                 dirs.push(file);
             }
         }
+        if(cardsToCollage.size() != collageSize) {
+            gatherCards(dir.getParentFile(), prefix);
+        }
+    }
+
+    private boolean checkToStopAndGatherCardsByList(File cardsListFile, String prefix, String currentPath) {
+        try (Scanner scanner = new Scanner(cardsListFile)) {
+            while (scanner.hasNext()) {
+                String record = scanner.nextLine();
+                String[] nameAndDescription = record.split(" ");
+                String name = nameAndDescription[0];
+                String cardsDescription = "";
+                try {
+                    cardsDescription = nameAndDescription[1];
+                } catch(ArrayIndexOutOfBoundsException ignored) {}
+                Card card = cards.get(name);
+                if(card == null) {
+                    addCard(prefix, currentPath, name, cardsDescription);
+                } else {
+                    cardsToCollage.add(card);
+                }
+                if(cardsToCollage.size() == collageSize) {
+                    return true;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private void addCard(String prefix, String currentPath, String name, String description) {
