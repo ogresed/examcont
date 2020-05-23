@@ -16,7 +16,6 @@ import java.util.TreeMap;
 
 public class PlayersFrame extends BaseFrame {
     int index;
-    ManyMouseObserver mouseObserver;
     GeneralLogic general;
     StatusBar downBar;
     MonologueBar monologueBar;
@@ -34,13 +33,12 @@ public class PlayersFrame extends BaseFrame {
         }
     }
 
-    PlayersFrame(int index, ManyMouseObserver observer, GeneralLogic generalLogic, TreeMap<Integer, Integer> map) {
+    PlayersFrame(int index, GeneralLogic generalLogic) {
         //base options
         super(JFrame.EXIT_ON_CLOSE, "Contact");
         setBounds(0, 0, 700, 540);
         // definition
         this.index = index;
-        this.mouseObserver = observer;
         this.general = generalLogic;
         this.downBar = new StatusBar(String.valueOf(index));
         this.monologueBar = new MonologueBar(0, 0, 300, 200);
@@ -48,7 +46,7 @@ public class PlayersFrame extends BaseFrame {
         addComponentListener(new PlayersFrameComponentAdapter());
         // create panels
         setLayout(new BorderLayout());
-        switchedPanel = new SwitchedPanel(index, observer, generalLogic, downBar, monologueBar, map);
+        switchedPanel = new SwitchedPanel(index, generalLogic, downBar, monologueBar);
 
         add(monologueBar, BorderLayout.NORTH);
         add(switchedPanel, BorderLayout.CENTER);
@@ -76,7 +74,7 @@ public class PlayersFrame extends BaseFrame {
         public void componentResized(ComponentEvent e) {
             super.componentResized(e);
             Rectangle r = getBounds();
-            Coordinates c = mouseObserver.getCoordinates(index);
+            Coordinates c = general.mouseObserver.getCoordinates(index);
             c.setXmax(r.width);
             c.setYmax(r.height);
         }

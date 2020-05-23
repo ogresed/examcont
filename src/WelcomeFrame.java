@@ -11,6 +11,7 @@ public class WelcomeFrame extends BaseFrame {
     JPanel transitPanel;
     ArrayList<PlayersFrame> playersFrames;
     GeneralLogic general;
+    DeviceRecorder deviceRecorder;
     public WelcomeFrame() {
         //set base option
         super(JFrame.EXIT_ON_CLOSE, "Contact");
@@ -34,7 +35,6 @@ public class WelcomeFrame extends BaseFrame {
         Rectangle r = getBounds();
         //initialization
         playersFrames = new ArrayList<>(numberOfMouse);
-        general = new GeneralLogic(numberOfMouse);
 
         //adding panels
         transitPanel = new JPanel();
@@ -43,7 +43,7 @@ public class WelcomeFrame extends BaseFrame {
         DeviceBinder deviceBinder = new DeviceBinder();
 
         mouseObserver.setMap(deviceBinder.getWindowDevise());
-        DeviceRecorder deviceRecorder = new DeviceRecorder(5, deviceBinder);
+        deviceRecorder = new DeviceRecorder(6, deviceBinder);
         mouseObserver.setDeviceRecorder(deviceRecorder);
         bindMicePanel = new BindMicePanel(numberOfMouse, playersFrames, deviceBinder, deviceRecorder);
         deviceBinder.setBindPanel(bindMicePanel);
@@ -52,9 +52,11 @@ public class WelcomeFrame extends BaseFrame {
         transitPanel.add(panel, "main");
         transitPanel.add(bindMicePanel, "bind");
         add(transitPanel, BorderLayout.CENTER);
+        // create general
+        general = new GeneralLogic(numberOfMouse, mouseObserver, deviceBinder.getWindowDevise());
         //create cards frames
         for(int i = 0; i < numberOfMouse; i++) {
-            playersFrames.add(new PlayersFrame(i, mouseObserver, general, deviceBinder.getWindowDevise()));
+            playersFrames.add(new PlayersFrame(i, general));
         }
         //final settings
         setVisible(true);
@@ -76,6 +78,7 @@ public class WelcomeFrame extends BaseFrame {
     ActionListener exitListener = e -> System.exit(0);
 
     private void onRun() {
+        deviceRecorder.setToRecord(false);
         setVisible(false);
         for(PlayersFrame frame : playersFrames) {
             frame.setVisible(true);

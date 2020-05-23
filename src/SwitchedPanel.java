@@ -7,7 +7,6 @@ import java.util.TreeMap;
 
 public class SwitchedPanel extends JPanel {
     int index;
-    ManyMouseObserver observer;
     GeneralLogic generalLogic;
     StatusBar downBar;
 
@@ -16,19 +15,17 @@ public class SwitchedPanel extends JPanel {
     MonologueBar monologueBar;
 
     public SwitchedPanel(int index,
-                         ManyMouseObserver observer,
                          GeneralLogic generalLogic,
                          StatusBar downBar,
-                         MonologueBar monologueBar, TreeMap<Integer, Integer> map) {
+                         MonologueBar monologueBar) {
         this.index = index;
-        this.observer = observer;
         this.generalLogic = generalLogic;
         this.downBar = downBar;
         this.monologueBar = monologueBar;
         setLayout(new CardLayout());
 
-        intro = new IntroPanel(generalLogic.getReadyChecker(), index, this, observer, map, monologueBar);
-        cardPanel = new CardPanel(index, observer, generalLogic, downBar, map);
+        intro = new IntroPanel(index, generalLogic, this, monologueBar );
+        cardPanel = new CardPanel(index, generalLogic, downBar);
 
         add(intro, "intro");
         add(cardPanel, "card");

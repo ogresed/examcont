@@ -75,6 +75,7 @@ public class ManyMouseObserver {
                     case ManyMouseEvent.BUTTON:
                         //0 - release, 1 - press
                         if (event.value == 0) {
+                            System.out.println(event.device);
                             int deviceIndex = event.device;
                             goAction(deviceIndex);
                         } else if(event.value == 1) {

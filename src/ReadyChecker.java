@@ -1,5 +1,3 @@
-//import SwitchedPanel;
-
 public class ReadyChecker {
     int totalNumber;
     int currentNumber = 0;

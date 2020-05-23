@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class IntroPanel extends JPanel {
     private static final String waitOtherMessage = "Ожидайте остальных";
@@ -35,14 +34,12 @@ public class IntroPanel extends JPanel {
     final ImageBounds startBounds;
     String message = introduction;
 
-    public IntroPanel(ReadyChecker readyChecker, int index, SwitchedPanel panel,
-                      ManyMouseObserver observer,
-                      TreeMap<Integer, Integer> winDevMap, MonologueBar monologueBar) {
-        this.readyChecker = readyChecker;
+    public IntroPanel(int index, GeneralLogic generalLogic, SwitchedPanel panel, MonologueBar monologueBar) {
+        this.readyChecker = generalLogic.readyChecker;
         this.monitorIndex = index;
         this.panel = panel;
-        this.observer = observer;
-        this.winDevMap = winDevMap;
+        this.observer = generalLogic.mouseObserver;
+        this.winDevMap = generalLogic.windowDevise;
         this.monologueBar = monologueBar;
         monologueBar.setText(introduction);
 

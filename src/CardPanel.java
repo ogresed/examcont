@@ -29,14 +29,13 @@ public class CardPanel extends JPanel {
         }
     }
 
-    public CardPanel(int index, ManyMouseObserver observer, GeneralLogic generalLogic,
-                     StatusBar downBar,
-                     TreeMap<Integer, Integer> winDevMap) {
+    public CardPanel(int index, GeneralLogic generalLogic,
+                     StatusBar downBar) {
         this.monitorIndex = index;
-        this.mouseObserver = observer;
+        this.mouseObserver = generalLogic.mouseObserver;
         this.general = generalLogic;
         this.downBar = downBar;
-        this.winDevMap = winDevMap;
+        this.winDevMap = generalLogic.windowDevise;
 
         upBar = new StatusBar(200,100);
     }
