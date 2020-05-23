@@ -1,3 +1,5 @@
+package gui.view;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,13 +10,13 @@ public class StatusBar extends JLabel {
         super.setPreferredSize(new Dimension(200, 16));
     }
 
-    StatusBar(String text) {
+    public StatusBar(String text) {
         super();
         super.setPreferredSize(new Dimension(200, 16));
         setText(text);
     }
 
-    StatusBar(int w, int h) {
+    public StatusBar(int w, int h) {
         super();
         super.setPreferredSize(new Dimension(w, h));
     }

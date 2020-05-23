@@ -1,3 +1,6 @@
+import coordinates.Coordinates;
+import gui.card.ImageBounds;
+import gui.view.MonologueBar;
 import util.Constants;
 
 import javax.imageio.ImageIO;

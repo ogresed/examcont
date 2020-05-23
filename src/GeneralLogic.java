@@ -2,7 +2,7 @@ public class GeneralLogic {
     int numberOfMice;
     ReadyChecker readyChecker;
 
-    GeneralLogic(int numberOfMice) {
+    public GeneralLogic(int numberOfMice) {
         this.numberOfMice = numberOfMice;
         readyChecker = new ReadyChecker(numberOfMice);
     }

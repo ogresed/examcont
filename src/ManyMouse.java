@@ -1,3 +1,5 @@
+import manymouse.ManyMouseEvent;
+
 public class ManyMouse {
     // Native method hooks.
     public native static synchronized int Init();

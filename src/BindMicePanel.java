@@ -1,3 +1,5 @@
+import gui.view.MonologueBar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,8 +12,7 @@ public class BindMicePanel extends JPanel {
     DeviceRecorder deviceRecorder;
     DeviceBinder deviceBinder;
     int numberOfMice;
-    //todo: упаковка в jar: перед выполнением вытаскивать dll либу(ох)
-    BindMicePanel (int numberOfMice, ArrayList<PlayersFrame> playersFrames, DeviceBinder deviceBinder, DeviceRecorder recorder) {
+    public BindMicePanel(int numberOfMice, ArrayList<PlayersFrame> playersFrames, DeviceBinder deviceBinder, DeviceRecorder recorder) {
         this.playersFrames = playersFrames;
         this.numberOfMice = numberOfMice;
         this.deviceBinder = deviceBinder;

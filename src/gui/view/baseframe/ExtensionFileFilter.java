@@ -1,4 +1,4 @@
-package gui.baseframe;
+package gui.view.baseframe;
 
 import javax.swing.filechooser.FileFilter;
 import java.io.File;

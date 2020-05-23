@@ -1,4 +1,4 @@
-import gui.baseframe.BaseFrame;
+import gui.view.baseframe.BaseFrame;
 
 import javax.swing.*;
 import java.awt.*;

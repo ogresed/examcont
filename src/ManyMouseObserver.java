@@ -1,3 +1,7 @@
+import coordinates.Coordinates;
+import manymouse.ClickButtonAction;
+import manymouse.ManyMouseEvent;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;

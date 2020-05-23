@@ -1,4 +1,4 @@
-package gui.baseframe;
+package gui.view.baseframe;
 
 import javax.swing.*;
 import java.awt.*;

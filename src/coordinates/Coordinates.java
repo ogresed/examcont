@@ -1,3 +1,5 @@
+package coordinates;
+
 public class Coordinates {
     private int x, y;
     private int Xmax, Ymax;

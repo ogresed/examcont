@@ -1,3 +1,5 @@
+import coordinates.Coordinates;
+import gui.view.StatusBar;
 import util.Constants;
 
 import javax.imageio.ImageIO;

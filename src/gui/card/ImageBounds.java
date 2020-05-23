@@ -1,11 +1,13 @@
+package gui.card;
+
 import java.awt.image.BufferedImage;
 
 public class ImageBounds {
-    int x, y;
-    final int width, height;
+    public int x, y;
+    public final int width, height;
     BufferedImage image;
 
-    ImageBounds(final BufferedImage image) {
+    public ImageBounds(final BufferedImage image) {
         width = image.getWidth();
         height = image.getHeight();
         this.image = image;

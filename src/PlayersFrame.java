@@ -1,4 +1,7 @@
-import gui.baseframe.BaseFrame;
+import coordinates.Coordinates;
+import gui.view.MonologueBar;
+import gui.view.StatusBar;
+import gui.view.baseframe.BaseFrame;
 import util.Constants;
 
 import javax.imageio.ImageIO;

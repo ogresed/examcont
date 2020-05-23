@@ -1,4 +1,6 @@
-class ClickButtonAction {
+package manymouse;
+
+public class ClickButtonAction {
     private Action action;
 
     public Action getAction() {

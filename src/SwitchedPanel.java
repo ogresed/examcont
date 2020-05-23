@@ -1,3 +1,6 @@
+import gui.view.MonologueBar;
+import gui.view.StatusBar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.TreeMap;

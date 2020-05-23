@@ -1,3 +1,5 @@
+package manymouse;
+
 public class ManyMouseEvent {
     // Event types...
     public static final int ABSMOTION = 0;
