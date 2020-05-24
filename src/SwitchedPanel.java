@@ -3,7 +3,6 @@ import gui.view.StatusBar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.TreeMap;
 
 public class SwitchedPanel extends JPanel {
     int index;
@@ -36,7 +35,7 @@ public class SwitchedPanel extends JPanel {
         cardLayout.show(this, key);
     }
 
-    public void setActionForIntroPanel() {
-        intro.setAction();
+    public void setOnStartAction() {
+        intro.setOnStartAction();
     }
 }

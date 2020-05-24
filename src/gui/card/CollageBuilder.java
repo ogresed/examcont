@@ -14,16 +14,18 @@ public class CollageBuilder {
     private static final String DESCRIPTION_FILE_NAME = "description";
     private static final String PNG = ".png";
     private final File rootDirectory;
+    private Collage collage;
 
-    private static final int collageWidth = 5;
-    private static final int collageHeight = 2;
-    private static final int collageSize = collageHeight * collageWidth;
+    public static final int collageWidth = 5;
+    public static final int collageHeight = 2;
+    public static final int collageSize = collageHeight * collageWidth;
 
-    public CollageBuilder(String directoryName) {
-        rootDirectory = new File(directoryName);
-        cardsToCollage = new LinkedList<>();
-        cards = new TreeMap<>();
-        usedDirs = new ArrayList<>();
+    public CollageBuilder(String directoryName, Collage collage) {
+        this.collage = collage;
+        this.rootDirectory = new File(directoryName);
+        this.cardsToCollage = new LinkedList<>();
+        this.cards = new TreeMap<>();
+        this.usedDirs = new ArrayList<>();
     }
 
     private Map<String, Card> cards;
@@ -35,7 +37,7 @@ public class CollageBuilder {
         gatherCards(prefixRoot, prefix);
         // create result
         usedDirs.clear();
-        return imageSeed();
+        return imagesSeed();
     }
 
     /**
@@ -124,15 +126,18 @@ public class CollageBuilder {
         }
     }
 
-    private BufferedImage imageSeed() {
+    private BufferedImage imagesSeed() {
         BufferedImage result = new BufferedImage(
                 Card.width*collageWidth, Card.height*collageHeight,
                 BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = result.createGraphics();
         int x = 0, y = 0;
+        int counter = 0;
         while (!cardsToCollage.isEmpty()) {
             Card card = cardsToCollage.pop();
             g.drawImage(card.picture, x, y, null);
+            collage.cardsInCollage[counter] = card;
+            counter++;
             x += Card.width;
             if(x >= result.getWidth()) {
                 x = 0;

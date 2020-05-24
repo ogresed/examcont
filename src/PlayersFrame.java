@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.TreeMap;
 
-public class PlayersFrame extends BaseFrame {
+public class PlayersFrame extends JFrame {
     int index;
     GeneralLogic general;
     StatusBar downBar;
@@ -35,8 +35,9 @@ public class PlayersFrame extends BaseFrame {
 
     PlayersFrame(int index, GeneralLogic generalLogic) {
         //base options
-        super(JFrame.EXIT_ON_CLOSE, "Contact");
-        setBounds(0, 0, 700, 540);
+        //setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);
+        setBounds(index* 700, 0, 600, 540);
         // definition
         this.index = index;
         this.general = generalLogic;
@@ -65,8 +66,8 @@ public class PlayersFrame extends BaseFrame {
         getContentPane().setCursor(blankCursor);
     }
 
-    public void setIntroAction() {
-        switchedPanel.setActionForIntroPanel();
+    public void setOnStartAction() {
+        switchedPanel.setOnStartAction();
     }
 
     class PlayersFrameComponentAdapter extends ComponentAdapter {

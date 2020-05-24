@@ -1,13 +1,12 @@
 import coordinates.Coordinates;
+import gui.card.Card;
+import gui.card.Collage;
+import gui.card.CollageBuilder;
 import gui.view.StatusBar;
-import utils.Constants;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.TreeMap;
 
 public class CardPanel extends JPanel {
@@ -19,15 +18,7 @@ public class CardPanel extends JPanel {
     StatusBar downBar;
     StatusBar upBar;
 
-    static BufferedImage sun;
-    static {
-        try {
-            sun = ImageIO.read(new File(System.getProperty("user.dir") +
-                    Constants.RESOURCES_PATH + "\\pictures\\sun.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private volatile Image showedImage = null;
 
     public CardPanel(int index, GeneralLogic generalLogic,
                      StatusBar downBar) {
@@ -39,11 +30,14 @@ public class CardPanel extends JPanel {
 
         upBar = new StatusBar(200,100);
     }
-    //todo: при нажатии на крестик и другий кнопки фрейма приложение не должно закрываться
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(sun, 0, 0, null);
+        try {
+            g.drawImage(showedImage, 0, 0, null);
+        } catch (NullPointerException ignored) {
+            System.out.println(123123123);
+        }
         try {
             int deviceIndex = winDevMap.get(monitorIndex);
             Coordinates coordinates = mouseObserver.getCoordinates(deviceIndex);
@@ -51,5 +45,23 @@ public class CardPanel extends JPanel {
             upBar.setText(String.format("%d %d", coordinates.getX(), coordinates.getY()));
         } catch (IndexOutOfBoundsException ignored) {}
         repaint();
+    }
+
+    public void setPicture(BufferedImage collage) {
+        showedImage = collage;
+    }
+
+    public void setChooseAction() {
+        mouseObserver.setAction(monitorIndex, this::onCardChooseAction);
+    }
+
+    private void onCardChooseAction(int xC, int yC) {
+        int x = xC / Card.width;
+        int y = yC / Card.height;
+        int cardIndex = x + y * CollageBuilder.collageWidth;
+        if(cardIndex > CollageBuilder.collageSize - 1) {
+            return;
+        }
+        System.out.println(general.collage.cardsInCollage[cardIndex].name);
     }
 }

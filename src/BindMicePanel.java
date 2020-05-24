@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class BindMicePanel extends JPanel {
-    private static final String intro = "Выберите номер окна чтобы связать его с девайсом";
+    private static final String intro = "Выберите номер окна чтобы связать его с девайсом. Для связывания щёлкните мышкой столько раз: ";
     MonologueBar monologue;
     JRadioButton[] jRadioButtons;
     ArrayList<PlayersFrame> playersFrames;
@@ -20,7 +20,7 @@ public class BindMicePanel extends JPanel {
 
         setLayout(new BorderLayout());
         monologue = new MonologueBar(0, 0, 300, 200);
-        monologue.setText(intro);
+        monologue.setText(intro + deviceRecorder.capacity);
         add(monologue, BorderLayout.NORTH);
 
         JPanel radioPanel = new JPanel();

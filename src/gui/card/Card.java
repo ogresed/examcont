@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 public class Card {
     static int thickness = 4;
-    static int width = 200;
-    static int height = 150;
+    public static int width = 200;
+    public static int height = 150;
 
     int xBound;
     int yBound;
@@ -14,9 +14,9 @@ public class Card {
     int index;
 
     String prefix;
-    String name;
-    String description;
-    BufferedImage picture;
+    public String name;
+    public String description;
+    public BufferedImage picture;
 
     public Card(String prefix, String name, String description, BufferedImage picture) {
         this.prefix = prefix;

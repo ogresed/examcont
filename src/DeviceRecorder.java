@@ -1,7 +1,7 @@
 public class DeviceRecorder {
     private boolean toRecord = false;
     int [] signals;
-    int capacity;
+    public int capacity;
     int current;
     DeviceBinder deviceBinder;
 

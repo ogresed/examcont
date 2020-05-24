@@ -75,7 +75,6 @@ public class ManyMouseObserver {
                     case ManyMouseEvent.BUTTON:
                         //0 - release, 1 - press
                         if (event.value == 0) {
-                            System.out.println(event.device);
                             int deviceIndex = event.device;
                             goAction(deviceIndex);
                         } else if(event.value == 1) {
@@ -97,11 +96,11 @@ public class ManyMouseObserver {
 
     private void goAction(int deviceIndex) {
         Coordinates c = coordinates.get(deviceIndex);
-        int mIndex = getMIndex(deviceIndex);
-        try {clickActions.get(mIndex).getAction().action(c.getX(), c.getY());}catch(NullPointerException ignore){}
+        int monitorIndex = getMonitorIndex(deviceIndex);
+        try {clickActions.get(monitorIndex).getAction().action(c.getX(), c.getY());}catch(NullPointerException ignore){}
     }
 
-    private int getMIndex(int deviceIndex) {
+    private int getMonitorIndex(int deviceIndex) {
         for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
             if(entry.getValue() == deviceIndex) {
                 return entry.getKey();

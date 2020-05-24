@@ -1,6 +1,7 @@
 import coordinates.Coordinates;
 import gui.card.ImageBounds;
 import gui.view.MonologueBar;
+import manymouse.ClickButtonAction;
 import utils.Constants;
 
 import javax.imageio.ImageIO;
@@ -76,8 +77,8 @@ public class IntroPanel extends JPanel {
         startBounds.setX(x);
         startBounds.setY(y);
     }
-    // синхронизация кнопок старт работает не до конца
-    public void OnStart(int x, int y) {
+
+    private void OnStart(int x, int y) {
         int XPos = startBounds.x;
         int YPos = startBounds.y;
         int width = startBounds.width;
@@ -89,7 +90,7 @@ public class IntroPanel extends JPanel {
         }
     }
 
-    public void setAction() {
+    public void setOnStartAction() {
         observer.setAction(monitorIndex, this::OnStart);
     }
 }

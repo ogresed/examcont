@@ -12,12 +12,10 @@ public class WelcomeFrame extends BaseFrame {
     ArrayList<PlayersFrame> playersFrames;
     GeneralLogic general;
     DeviceRecorder deviceRecorder;
+
     public WelcomeFrame() {
         //set base option
         super(JFrame.EXIT_ON_CLOSE, "Contact");
-        //todo: полноэкраннй режим
-        //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //setUndecorated(true);
         setBounds(500, 150, 700, 540);
         //
         createButtons();
@@ -25,14 +23,13 @@ public class WelcomeFrame extends BaseFrame {
         // initialization
         ManyMouseObserver mouseObserver = ManyMouseObserver.getInstance();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         int numberOfMouse = mouseObserver.getNumberOfMice();
-        //TODO: if number of mice == 0 restart or other solution
+        //todo: if number of mice == 0 restart or other solution
         //====================================
-        Rectangle r = getBounds();
         //initialization
         playersFrames = new ArrayList<>(numberOfMouse);
 
@@ -77,12 +74,12 @@ public class WelcomeFrame extends BaseFrame {
     ActionListener mouseSetListener = e -> onSetMouse();
     ActionListener exitListener = e -> System.exit(0);
 
-    private void onRun() {
+    void onRun() {
         deviceRecorder.setToRecord(false);
         setVisible(false);
         for(PlayersFrame frame : playersFrames) {
             frame.setVisible(true);
-            frame.setIntroAction();
+            frame.setOnStartAction();
         }
     }
 
