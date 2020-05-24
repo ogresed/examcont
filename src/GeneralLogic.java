@@ -5,17 +5,13 @@ import utils.Constants;
 import java.util.TreeMap;
 
 public class GeneralLogic {
-    public enum Role {
-        Answer, Question
-    }
-
     int playersNumber;
     ManyMouseObserver mouseObserver;
     TreeMap<Integer, Integer> windowDevise;
     ReadyChecker readyChecker;
     CollageBuilder collageBuilder;
     Collage collage;
-    Role[] roles;
+    GameState gameState;
 
     public GeneralLogic(int numberOfPlayers, ManyMouseObserver mouseObserver, TreeMap<Integer, Integer> windowDevise) {
         this.playersNumber = numberOfPlayers;
@@ -25,12 +21,7 @@ public class GeneralLogic {
         this.collageBuilder = new CollageBuilder(System.getProperty("user.dir") +
                 Constants.RESOURCES_PATH + "\\cards", collage);
         this.readyChecker = new ReadyChecker(numberOfPlayers, collageBuilder);
-
-        roles = new Role[numberOfPlayers];
-        roles[0] = Role.Question;
-        for(int i = 1; i < numberOfPlayers; i++) {
-            roles[i] = Role.Answer;
-        }
+        this.gameState = new GameState(numberOfPlayers);
     }
 
     public ReadyChecker getReadyChecker() {

@@ -30,6 +30,7 @@ public class CardPanel extends JPanel {
 
         upBar = new StatusBar(200,100);
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -59,9 +60,14 @@ public class CardPanel extends JPanel {
         int x = xC / Card.width;
         int y = yC / Card.height;
         int cardIndex = x + y * CollageBuilder.collageWidth;
-        if(cardIndex > CollageBuilder.collageSize - 1) {
+        if(cardIndex > CollageBuilder.collageSize - 1 || x > CollageBuilder.collageWidth) {
             return;
         }
         System.out.println(general.collage.cardsInCollage[cardIndex].name);
+        actionWithCard(monitorIndex, general.collage.cardsInCollage[cardIndex]);
+    }
+
+    private void actionWithCard(int monitorIndex, Card card) {
+        
     }
 }

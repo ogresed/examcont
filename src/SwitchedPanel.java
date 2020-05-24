@@ -8,6 +8,7 @@ public class SwitchedPanel extends JPanel {
     int index;
     GeneralLogic generalLogic;
     StatusBar downBar;
+    public PlayersFrame playersFrame;
 
     IntroPanel intro;
     CardPanel cardPanel;
@@ -16,11 +17,13 @@ public class SwitchedPanel extends JPanel {
     public SwitchedPanel(int index,
                          GeneralLogic generalLogic,
                          StatusBar downBar,
-                         MonologueBar monologueBar) {
+                         MonologueBar monologueBar,
+                         PlayersFrame playersFrame) {
         this.index = index;
         this.generalLogic = generalLogic;
         this.downBar = downBar;
         this.monologueBar = monologueBar;
+        this.playersFrame = playersFrame;
         setLayout(new CardLayout());
 
         intro = new IntroPanel(index, generalLogic, this, monologueBar );

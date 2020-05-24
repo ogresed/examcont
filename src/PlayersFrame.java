@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.TreeMap;
 
 public class PlayersFrame extends JFrame {
+    public static final int maxMonoY = 200;
+    public static final int statusBarY = 16;
+
     int index;
     GeneralLogic general;
     StatusBar downBar;
@@ -37,17 +40,17 @@ public class PlayersFrame extends JFrame {
         //base options
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
-        setBounds(index* 700, 0, 600, 540);
+        setBounds(index * 450, 0, 350, 600);
         // definition
         this.index = index;
         this.general = generalLogic;
         this.downBar = new StatusBar(String.valueOf(index));
-        this.monologueBar = new MonologueBar(0, 0, 300, 200);
+        this.monologueBar = new MonologueBar(300, maxMonoY);
         // resize listener to change max coordinates values
         addComponentListener(new PlayersFrameComponentAdapter());
         // create panels
         setLayout(new BorderLayout());
-        switchedPanel = new SwitchedPanel(index, generalLogic, downBar, monologueBar);
+        switchedPanel = new SwitchedPanel(index, generalLogic, downBar, monologueBar, this);
 
         add(monologueBar, BorderLayout.NORTH);
         add(switchedPanel, BorderLayout.CENTER);
