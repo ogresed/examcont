@@ -16,7 +16,6 @@ public class MonologueBar extends JLabel {
         setPreferredSize(d);
         setMinimumSize(d);
         setLocation(0, 0);
-        //setBounds(x, y, width, height);
     }
     @Override
     public void setText(String text) {

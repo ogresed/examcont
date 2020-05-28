@@ -12,7 +12,7 @@ public class SwitchedPanel extends JPanel {
 
     IntroPanel intro;
     CardPanel cardPanel;
-    MonologueBar monologueBar;
+    public MonologueBar monologueBar;
 
     public SwitchedPanel(int index,
                          GeneralLogic generalLogic,
@@ -27,7 +27,7 @@ public class SwitchedPanel extends JPanel {
         setLayout(new CardLayout());
 
         intro = new IntroPanel(index, generalLogic, this, monologueBar );
-        cardPanel = new CardPanel(index, generalLogic, downBar);
+        cardPanel = new CardPanel(index, generalLogic, downBar, monologueBar);
 
         add(intro, "intro");
         add(cardPanel, "card");

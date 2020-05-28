@@ -39,7 +39,8 @@ public class PlayersFrame extends JFrame {
     PlayersFrame(int index, GeneralLogic generalLogic) {
         //base options
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
+        //setExtendedState(JFrame.MAXIMIZED_HORIZ);
+        //setUndecorated(true);
         setBounds(index * 450, 0, 350, 600);
         // definition
         this.index = index;

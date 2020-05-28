@@ -92,7 +92,7 @@ public class CollageBuilder {
         try (Scanner scanner = new Scanner(cardsListFile)) {
             while (scanner.hasNext()) {
                 String record = scanner.nextLine();
-                String[] nameAndDescription = record.split(" ");
+                String[] nameAndDescription = record.split("-");
                 String name = nameAndDescription[0];
                 String cardsDescription = "";
                 try {
