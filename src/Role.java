@@ -1,3 +1,3 @@
 public enum Role {
-    Answer, Question
+    Answerer, Questioner, Suggester
 }

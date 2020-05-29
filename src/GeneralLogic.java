@@ -35,7 +35,7 @@ public class GeneralLogic {
 
     public void sendAllAnswerers(String message) {
         for(PlayersFrame frame: playersFrames) {
-            if( gameState.roles[frame.index] == Role.Answer) {
+            if( gameState.roles[frame.index] == Role.Answerer) {
                 frame.monologueBar.setText(message);
             }
         }
@@ -43,9 +43,13 @@ public class GeneralLogic {
 
     public void sendAllWithoutSuggester(String message) {
         for(PlayersFrame frame: playersFrames) {
-            if(frame.index != gameState.suggested) {
+            if(frame.index != gameState.suggester) {
                 frame.monologueBar.setText(message);
             }
         }
+    }
+
+    public void sendQuestioner(String message) {
+        playersFrames.get( gameState.questioner).monologueBar.setText(message);
     }
 }

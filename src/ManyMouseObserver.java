@@ -97,7 +97,9 @@ public class ManyMouseObserver {
     private void goAction(int deviceIndex) {
         Coordinates c = coordinates.get(deviceIndex);
         int monitorIndex = getMonitorIndex(deviceIndex);
-        try {clickActions.get(monitorIndex).getAction().action(c.getX(), c.getY());}catch(NullPointerException ignore){}
+        try {clickActions.get(monitorIndex).getAction().action(c.getX(), c.getY());}catch(NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     private int getMonitorIndex(int deviceIndex) {

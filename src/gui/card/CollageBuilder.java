@@ -8,8 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
-//todo: запомнить ее координаты
-
 public class CollageBuilder {
     private static final String DESCRIPTION_FILE_NAME = "description";
     private static final String PNG = ".png";
@@ -154,4 +152,3 @@ public class CollageBuilder {
 }
 // todo: распределить процессорное время в пользу этого приложения или увеличить приоритет потока
 // solution: Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-// todo: перед экспериментом расчитывать размер картинки и ресайзить ее исходя из размера экрана

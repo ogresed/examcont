@@ -7,7 +7,7 @@ public class Main {
             welcomeFrame.bindMicePanel.deviceBinder.windowDevise.put(i,i);
         }
         welcomeFrame.onUndecore();
-        welcomeFrame.onFullScreen();
+        ///welcomeFrame.onFullScreen();
         welcomeFrame.onRun();
     }
 }

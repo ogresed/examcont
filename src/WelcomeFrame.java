@@ -89,7 +89,6 @@ public class WelcomeFrame extends BaseFrame {
             frame.setVisible(true);
         }
     }
-   // todo: кнопка "старт" не активная пока не нажали Close
     void onFullScreen() {
         for(PlayersFrame frame : playersFrames) {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
