@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MonologueBar extends JLabel {
-    public MonologueBar (int width, int height) {
+    public MonologueBar (int width, int height, int fontSize) {
         setOpaque(true);
         setForeground(Color.BLUE);
-        setFont(new Font(null, Font.BOLD, 25));
+        setFont(new Font(null, Font.BOLD, fontSize));
         setHorizontalAlignment(JLabel.LEFT);
         setVerticalAlignment(JLabel.TOP);
         setBackground(new Color(150,250,250));

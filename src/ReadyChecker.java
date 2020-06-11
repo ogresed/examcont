@@ -45,18 +45,19 @@ public class ReadyChecker {
         y -= (PlayersFrame.maxMonoY + PlayersFrame.statusBarY);
         Card.width = x / CollageBuilder.collageWidth;
         Card.height = y / CollageBuilder.collageHeight;
-        String prefix = "по";
+        String prefix = "п";
         BufferedImage collage = collageBuilder.createCollage(prefix);
 
-        gameState.setCurrentWhoCanClick(WhoCanClick.Questioner);
+        gameState.state = State.Questioner;
 
         for(SwitchedPanel panel : panels) {
             panel.cardPanel.setChooseAction();
             panel.cardPanel.setPicture(collage);
-            if(gameState.getRole(panel.index) == Role.Answerer) {
-                panel.monologueBar.setText(CardPanel.WAIT_FOR_CHOOSE_CARD);
-            } else if(gameState.getRole(panel.index) == Role.Questioner) {
+            if(gameState.getRole(panel.index) == Role.Questioner) {
                 panel.monologueBar.setText(CardPanel.CHOOSE_CARD);
+            }
+            else {
+                panel.monologueBar.setText(CardPanel.WAIT_FOR_CHOOSE_CARD);
             }
             panel.switchPanel("card");
         }

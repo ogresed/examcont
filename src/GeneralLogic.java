@@ -2,6 +2,7 @@ import gui.card.Collage;
 import gui.card.CollageBuilder;
 import utils.Constants;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -35,21 +36,37 @@ public class GeneralLogic {
 
     public void sendAllAnswerers(String message) {
         for(PlayersFrame frame: playersFrames) {
-            if( gameState.roles[frame.index] == Role.Answerer) {
+            Role role = gameState.roundsGlobalState.getRole(frame.index);
+            if(role != Role.Questioner && role != Role.Suggester) {
                 frame.monologueBar.setText(message);
             }
         }
     }
 
-    public void sendAllWithoutSuggester(String message) {
-        for(PlayersFrame frame: playersFrames) {
-            if(frame.index != gameState.suggester) {
-                frame.monologueBar.setText(message);
-            }
-        }
+    public void sendSuggester(String message) {
+        playersFrames.get(gameState.roundsGlobalState.getSuggester()).monologueBar.setText(message);
     }
 
     public void sendQuestioner(String message) {
-        playersFrames.get( gameState.questioner).monologueBar.setText(message);
+        playersFrames.get(gameState.roundsGlobalState.getQuestioner()).monologueBar.setText(message);
+    }
+
+    public void sendWhoNotQuestioner(String message) {
+        for(PlayersFrame frame: playersFrames) {
+            Role role = gameState.roundsGlobalState.getRole(frame.index);
+            if(role != Role.Questioner) {
+                frame.monologueBar.setText(message);
+            }
+        }
+    }
+
+    public void nextLetter() {
+        gameState.numberOfLetters++;
+        String prefix = gameState.getPrefix();
+        BufferedImage collageImage = collageBuilder.createCollage(prefix);
+
+        for(PlayersFrame frame : playersFrames) {
+            frame.switchedPanel.cardPanel.setPicture(collageImage);
+        }
     }
 }

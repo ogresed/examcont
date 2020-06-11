@@ -19,7 +19,7 @@ public class BindMicePanel extends JPanel {
         this.deviceRecorder = recorder;
 
         setLayout(new BorderLayout());
-        monologue = new MonologueBar(300, 200);
+        //monologue = new MonologueBar(300, 200);
         monologue.setText(intro + deviceRecorder.capacity);
         add(monologue, BorderLayout.NORTH);
 

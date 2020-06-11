@@ -46,7 +46,7 @@ public class PlayersFrame extends JFrame {
         this.index = index;
         this.general = generalLogic;
         this.downBar = new StatusBar(String.valueOf(index));
-        this.monologueBar = new MonologueBar(300, maxMonoY);
+        this.monologueBar = new MonologueBar(300, maxMonoY, 25);
         // resize listener to change max coordinates values
         addComponentListener(new PlayersFrameComponentAdapter());
         // create panels

@@ -1,3 +1,4 @@
 public enum State {
-    Questioner, AllAnswerer, AllWithoutWhoAnswered, AnswererGuessed, QuestionerGuessed,
+    Questioner, AllAnswerer, Suggester, AllWithoutWhoAnswerer,
+    AnswererGuessed, QuestionerGuessed
 }

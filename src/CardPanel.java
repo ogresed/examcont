@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.TreeMap;
 
 public class CardPanel extends JPanel {
+    private static final int WAIT = 4000;
     public static final String CHOOSE_CARD = "Выберите карточку, кликнув по ней";
     public static final String WAIT_FOR_CHOOSE_CARD = "Дождитесь, пока ваш соперник выберет карточку";
     int monitorIndex;
@@ -56,7 +57,7 @@ public class CardPanel extends JPanel {
     public void setChooseAction() {
         mouseObserver.setAction(monitorIndex, this::onCardChooseAction);
     }
-static int c;
+
     void onCardChooseAction(int xC, int yC) {
         if(!general.clickable) {
             return;
@@ -69,89 +70,170 @@ static int c;
         }
         actionWithCard(monitorIndex, general.collage.cardsInCollage[cardIndex]);
 
-        System.out.println(++c + ") может кликать " + gameState.getCurrentWhoCanClick().name());
-        System.out.println("статус " + gameState.state);
+        System.out.println(++c + ") может кликать " + gameState.getCurrentState());
+        System.out.print(gameState.roundsGlobalState.getRole(0) + " ");
+        System.out.print(gameState.roundsGlobalState.getRole(1) + " ");
+        //crSystem.out.println(gameState.roundsGlobalState.getRole(2));
     }
     //todo:  main panel - панель настроек - связывание мышек, выбор префикса, выбор размера коллажа 3-6, 2-8 ...
-
+static int c;
     private void actionWithCard(int monitorIndex, Card card) {
         if(!gameState.canClick(monitorIndex)) {
-            System.out.println("cant click");
             return;
         }
         State state = gameState.state;
         switch (state) {
             case Questioner:
-                gameState.currentCard = card;
-                gameState.numberOfLetters++;
-
-                monologueBar.setText("Вы выбрали слово: " + gameState.currentCard.name);
-                general.sendAllAnswerers(getIntroForAnswerer());
-
-                gameState.state = State.AllAnswerer;
+                onMakeWord(card);
                 break;
-            case AllAnswerer:
-                gameState.suggester = monitorIndex;
-                gameState.suggestedCard = card;
-
-                monologueBar.setText("Вы предположили, что было загадано: " + card.name +
-                        "<br> Дождитесь, пока кто-нибудь не догадается, что вы имеете в виду");
-                general.sendAllWithoutSuggester("Предположили: это " + card.description + "?");
-
-                gameState.state = State.AllWithoutWhoAnswered;
+            case Suggester:
+                onSuggest(card);
                 break;
-            case AllWithoutWhoAnswered:
-                if(!gameState.checkDelay(monitorIndex)) {
+            case AllWithoutWhoAnswerer:
+                if(!gameState.delayIsUp(monitorIndex)) {
                     return;
                 }
                 if(!gameState.guessedCardByDescription(card)) {
-                    monologueBar.setText(card.name + " не " + gameState.suggestedCard.description);
-                    gameState.delay(monitorIndex);
+                    onWrongGuessedCard(card);
                     return;
                 }
-                else {
-                    if(gameState.roles[monitorIndex] == Role.Questioner) {
-                        monologueBar.setText("Вы догадались и перехватили возможность противников получить следующую букву");
-                        general.sendAllAnswerers("Вы не получили следующую букву: " +
-                                "загадывающий перехватил вашу возможность получить следующую букву");
-
-                        gameState.delay();
-                        try {Thread.sleep(5000); } catch (InterruptedException ignore) {}
-
-                        monologueBar.setText("Вы выбрали слово: " + gameState.currentCard.name);
-                        general.sendAllAnswerers(getIntroForAnswerer());
-
-                        gameState.state = State.AllAnswerer;
-                    }
-                    else if(gameState.roles[monitorIndex] == Role.Answerer) {
+                if(gameState.roundsGlobalState.getRole(monitorIndex) == Role.Questioner) {
+                    boolean isMakeCard = onQuestionerGuessedWord(card);
+                    if(isMakeCard) {
                         return;
-                        /*general.sendAllAnswerers("Вы догадались, и загадывающий сообщает вам следующую букву загаданного слова");
-                        general.sendQuestioner("Вы не успели отгадать слово и сообщаете всем следующую букву загаданого вами слова");
-                        try {Thread.sleep(5000); } catch (InterruptedException ignore) {}
-                        //gameState.delayForQuestioner();
-                        gameState.state = State.AnswererGuessed;
-
-                        gameState.numberOfLetters++;
-                        general.sendQuestioner("Вы выбрали слово: " + gameState.currentCard.name);
-                        general.sendAllAnswerers(getIntroForAnswerer());
-
-                        gameState.state = State.AllAnswerer;*/
+                    }
+                    general.collageBuilder.usedCards.add(card.name);
+                    BufferedImage collageImage = general.collageBuilder.createCollage(gameState.getPrefix());
+                    for(PlayersFrame frame : general.playersFrames) {
+                        frame.switchedPanel.cardPanel.setPicture(collageImage);
                     }
                 }
-                break;
-            case AnswererGuessed:
-                break;
-            case QuestionerGuessed:
+                else if(gameState.roundsGlobalState.getRole(monitorIndex) == Role.Answerer) {
+                    if(card.name.equals(gameState.currentCard.name)) {
+                        answererGuessedRootWord();
+
+                        general.collageBuilder.usedCards.add(card.name);
+                        BufferedImage collageImage = general.collageBuilder.createCollage(gameState.getPrefix());
+                        for(PlayersFrame frame : general.playersFrames) {
+                            frame.switchedPanel.cardPanel.setPicture(collageImage);
+                        }
+                    }
+                    else {
+                        answererGuessedSuggestedWord();
+
+                        general.collageBuilder.usedCards.add(card.name);
+                        BufferedImage collageImage = general.collageBuilder.createCollage(gameState.getPrefix());
+                        for(PlayersFrame frame : general.playersFrames) {
+                            frame.switchedPanel.cardPanel.setPicture(collageImage);
+                        }
+                    }
+                }
                 break;
             default:
                 break;
         }
-        gameState.changeCurrentWhoCanClick();
+    }
+
+    private void onWrongGuessedCard(Card card) {
+        monologueBar.setText(card.name + " не " + gameState.suggestedCard.description);
+        gameState.delay(monitorIndex);
+    }
+
+    private void answererGuessedSuggestedWord() {
+        general.sendQuestioner("Вы не успели отгадать слово и сообщаете всем следующую букву загаданого вами слова");
+        general.sendWhoNotQuestioner("Вы догадались, и загадывающий сообщает вам следующую букву загаданного слова");
+
+        gameState.roundsGlobalState.changeSuggester();
+        general.nextLetter();
+
+        gameState.delay();
+        try {Thread.sleep(WAIT); } catch (InterruptedException ignore) {}
+
+        general.sendQuestioner("Вы выбрали слово: " + gameState.currentCard.name);
+        general.sendAllAnswerers(getIntroForAnswerer());
+        general.sendSuggester(getIntroForSuggester());
+
+        gameState.state = State.Suggester;
+    }
+
+    private void answererGuessedRootWord() {
+        general.sendQuestioner("Ваши соперники успешно отгадали слово");
+        general.sendWhoNotQuestioner("Вы отгадали слово: " + gameState.currentCard.name);
+        //todo 11111111111111111111111111111111111111111
+        gameState.roundsGlobalState.changeSuggester();
+        boolean endOfExam = gameState.roundsGlobalState.changeQuestioner();
+        gameState.numberOfLetters = 0;
+        if(endOfExam) {
+            endOfExam();
+            return;
+        }
+
+        gameState.delay();
+        try {Thread.sleep(WAIT); } catch (InterruptedException ignore) {}
+
+        general.sendQuestioner(CardPanel.CHOOSE_CARD);
+        general.sendWhoNotQuestioner(CardPanel.WAIT_FOR_CHOOSE_CARD);
+
+        gameState.state = State.Questioner;
+    }
+
+    private boolean onQuestionerGuessedWord(Card card) {
+        if(card.name.equals(gameState.currentCard.name)) {
+            return true;
+        }
+        general.sendQuestioner("Вы догадались и перехватили возможность противников получить следующую букву");
+        String fail = "Вы не получили следующую букву: " +
+                "загадывающий перехватил вашу возможность получить следующую букву";
+        general.sendWhoNotQuestioner(fail);
+        gameState.roundsGlobalState.changeSuggester();
+
+        gameState.delay();
+        try {Thread.sleep(WAIT); } catch (InterruptedException ignore) {}
+
+        general.sendQuestioner("Вы выбрали слово: " + gameState.currentCard.name +
+                "<br> Подождите, пока кто-нибудь не сделает предположение");
+        general.sendAllAnswerers(getIntroForAnswerer());
+        general.sendSuggester(getIntroForSuggester());
+
+        gameState.state = State.Suggester;
+        return false;
+    }
+
+    private void onSuggest(Card card) {
+        gameState.suggestedCard = card;
+        general.sendSuggester("Вы предположили, что было загадано: " + card.name +
+                "<br> Дождитесь, пока кто-нибудь не догадается, что вы имеете в виду");
+        general.sendQuestioner("Предположили: это " + card.description + "?");
+        general.sendAllAnswerers("Предположили: это " + card.description + "?");
+
+        gameState.state = State.AllWithoutWhoAnswerer;
+    }
+
+    private void onMakeWord(Card card) {
+        gameState.currentCard = card;
+        gameState.numberOfLetters = 1;
+
+        general.sendQuestioner("Вы выбрали слово: " + gameState.currentCard.name +
+                "<br> Подождите, пока кто-нибудь не сделает предположение");
+        general.sendSuggester(getIntroForSuggester());
+        general.sendAllAnswerers(getIntroForAnswerer());
+
+        gameState.state = State.Suggester;
+    }
+
+    private void endOfExam() {
+        System.out.println("end of game");
     }
 
     private String getIntroForAnswerer() {
         return "Загадывающий выбрал слово<br> " +
-                "слово начинается на: " + "\"" + gameState.getPrefix() + "\"" +
-                "<br>Сделайте предположение";
+                "слово начинается на: \"" + gameState.getPrefix() +
+                "\"<br>Подождите, пока ваш партёр сделает предположение";
+    }
+
+    private String getIntroForSuggester() {
+        return "Загадывающий выбрал слово<br> " +
+                "слово начинается на: \"" + gameState.getPrefix() +
+                "\"<br>Сделайте предположение";
     }
 }

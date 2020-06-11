@@ -14,8 +14,8 @@ public class CollageBuilder {
     private final File rootDirectory;
     private Collage collage;
 
-    public static final int collageWidth = 5;
-    public static final int collageHeight = 2;
+    public static int collageWidth = 3;
+    public static int collageHeight = 2;
     public static final int collageSize = collageHeight * collageWidth;
 
     public CollageBuilder(String directoryName, Collage collage) {
@@ -24,11 +24,13 @@ public class CollageBuilder {
         this.cardsToCollage = new LinkedList<>();
         this.cards = new TreeMap<>();
         this.usedDirs = new ArrayList<>();
+        this.usedCards = new ArrayList<>();
     }
 
     private Map<String, Card> cards;
     private LinkedList<Card> cardsToCollage;
     private ArrayList<String> usedDirs;
+    public ArrayList<String> usedCards;
 
     public BufferedImage createCollage(String prefix) {
         File prefixRoot = getPrefixDir(prefix, rootDirectory);
@@ -92,6 +94,11 @@ public class CollageBuilder {
                 String record = scanner.nextLine();
                 String[] nameAndDescription = record.split("-");
                 String name = nameAndDescription[0];
+
+                if(usedCards.contains(name.substring(2))) {
+                    continue;
+                }
+
                 String cardsDescription = "";
                 try {
                     cardsDescription = nameAndDescription[1];
@@ -148,6 +155,10 @@ public class CollageBuilder {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public void clearUsedCards () {
+        usedCards.clear();
     }
 }
 // todo: распределить процессорное время в пользу этого приложения или увеличить приоритет потока

@@ -1,12 +1,12 @@
 import java.util.TreeMap;
 
 public class DeviceBinder {
-    private BindMicePanel bindPanel;
+    private WelcomePanel panel;
     TreeMap<Integer, Integer> windowDevise;
     int currentWindowToBind;
 
-    public void setBindPanel(BindMicePanel bindPanel) {
-        this.bindPanel = bindPanel;
+    public void setPanel(WelcomePanel panel) {
+        this.panel = panel;
     }
 
     public DeviceBinder () {
@@ -23,7 +23,7 @@ public class DeviceBinder {
 
     public void addBind(int deviceIndex) {
         windowDevise.put(currentWindowToBind, deviceIndex);
-        bindPanel.sayDone(currentWindowToBind ,deviceIndex);
+        panel.sayDone(currentWindowToBind ,deviceIndex);
         currentWindowToBind = -1;
     }
 }
