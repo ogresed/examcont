@@ -7,7 +7,7 @@ public class Collage {
     public Card[] cardsInCollage;
 
     public Collage () {
-        cardsInCollage = new Card[CollageBuilder.collageSize];
+        cardsInCollage = new Card[20];
     }
 
     public BufferedImage getCollage() {

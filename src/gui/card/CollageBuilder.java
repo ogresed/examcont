@@ -142,7 +142,7 @@ public class CollageBuilder {
         while (!cardsToCollage.isEmpty()) {
             Card card = cardsToCollage.pop();
             g.drawImage(card.picture, x, y, null);
-            //collage.cardsInCollage[counter] = card;
+            collage.cardsInCollage[counter] = card;
             counter++;
             x += Card.width;
             if(x >= result.getWidth()) {

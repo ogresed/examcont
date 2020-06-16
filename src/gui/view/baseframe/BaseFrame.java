@@ -17,12 +17,12 @@ public abstract class BaseFrame extends JFrame {
         setJMenuBar(menuBar);
         //create toolbar
         toolBar = new JToolBar();
+        toolBar.setFloatable(false);
         add(toolBar, BorderLayout.PAGE_START);
         toolBar.setRollover(true);
     }
 
     protected void createButtons() {
-
     }
 
     protected void createAction(
