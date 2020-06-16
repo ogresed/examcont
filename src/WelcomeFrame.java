@@ -8,7 +8,7 @@ public class WelcomeFrame extends BaseFrame {
     WelcomePanel panel;
     ArrayList<PlayersFrame> playersFrames;
     GeneralLogic general;
-    DeviceRecorder deviceRecorder;
+    DeviceCounter deviceRecorder;
 
     public WelcomeFrame() {
         //set base option
@@ -35,7 +35,7 @@ public class WelcomeFrame extends BaseFrame {
         DeviceBinder deviceBinder = new DeviceBinder();
 
         mouseObserver.setMap(deviceBinder.getWindowDevise());
-        deviceRecorder = new DeviceRecorder(6, deviceBinder);
+        deviceRecorder = new DeviceCounter(5, deviceBinder);
         mouseObserver.setDeviceRecorder(deviceRecorder);
         panel = new WelcomePanel(numberOfMouse, playersFrames, deviceBinder, deviceRecorder);
         add(panel);
@@ -57,13 +57,13 @@ public class WelcomeFrame extends BaseFrame {
         JMenu file =  makeMenu("File", 'F');
         createAction(file, "pictures/Exit.png", exitListener,'E', "Exit application");
         createAction(file, "pictures/Run.png", runListener,'R', "Run examination");
-        createAction(file, "pictures/Close.png", closeListener,'C', "Close");
+        //createAction(file, "pictures/Close.png", closeListener,'C', "Close");
         toolBar.addSeparator();
-        JMenu settings = makeMenu("Settings", 'S');
+        //JMenu settings = makeMenu("Settings", 'S');
         //createAction(settings, "pictures/SetMouse.png", mouseSetListener,'M', "Mapping mouse with window");
         toolBar.addSeparator();
-        createAction(settings, "pictures/Undecore.png", undecoreListener,'U', "Maje all windows undecored");
-        createAction(settings, "pictures/Full.png", fullScreenListener,'L', "Make all windows full");
+        //createAction(settings, "pictures/Undecore.png", undecoreListener,'U', "Maje all windows undecored");
+        //createAction(settings, "pictures/Full.png", fullScreenListener,'L', "Make all windows full");
     }
     // todo: ставить каждый фрейм в отдельный монитор
     ActionListener runListener = e -> onRun();
@@ -91,9 +91,17 @@ public class WelcomeFrame extends BaseFrame {
         deviceRecorder.setToRecord(false);
         setVisible(false);
         general.setClickable(true);
+
         for(PlayersFrame frame : playersFrames) {
             frame.setVisible(true);
             frame.setOnStartAction();
+
+            frame.dispose();
+            frame.setUndecorated(true);
+            //frame.pack();
+            frame.setVisible(true);
+
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
     }
 }

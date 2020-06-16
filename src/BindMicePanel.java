@@ -9,10 +9,10 @@ public class BindMicePanel extends JPanel {
     MonologueBar monologue;
     JRadioButton[] jRadioButtons;
     ArrayList<PlayersFrame> playersFrames;
-    DeviceRecorder deviceRecorder;
+    DeviceCounter deviceRecorder;
     public DeviceBinder deviceBinder;
     int numberOfMice;
-    public BindMicePanel(int numberOfMice, ArrayList<PlayersFrame> playersFrames, DeviceBinder deviceBinder, DeviceRecorder recorder) {
+    public BindMicePanel(int numberOfMice, ArrayList<PlayersFrame> playersFrames, DeviceBinder deviceBinder, DeviceCounter recorder) {
         this.playersFrames = playersFrames;
         this.numberOfMice = numberOfMice;
         this.deviceBinder = deviceBinder;

@@ -29,7 +29,7 @@ public class ManyMouseObserver {
     private int numberOfMice;
     private ArrayList<Coordinates> coordinates;
     private Map<Integer, ClickButtonAction> clickActions;
-    DeviceRecorder deviceRecorder;
+    DeviceCounter deviceRecorder;
     TreeMap<Integer, Integer> map;
 
     public void setMap(TreeMap<Integer, Integer> map) {
@@ -155,11 +155,11 @@ public class ManyMouseObserver {
         return y;
     }
 
-    public DeviceRecorder getDeviceRecorder() {
+    public DeviceCounter getDeviceRecorder() {
         return deviceRecorder;
     }
 
-    public void setDeviceRecorder(DeviceRecorder deviceRecorder) {
+    public void setDeviceRecorder(DeviceCounter deviceRecorder) {
         this.deviceRecorder = deviceRecorder;
     }
 }

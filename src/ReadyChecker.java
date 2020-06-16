@@ -45,7 +45,7 @@ public class ReadyChecker {
         y -= (PlayersFrame.maxMonoY + PlayersFrame.statusBarY);
         Card.width = x / CollageBuilder.collageWidth;
         Card.height = y / CollageBuilder.collageHeight;
-        String prefix = "п";
+        String prefix = "при";
         BufferedImage collage = collageBuilder.createCollage(prefix);
 
         gameState.state = State.Questioner;

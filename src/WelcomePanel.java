@@ -4,24 +4,23 @@ import gui.view.MonologueBar;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class WelcomePanel extends JPanel {
     private static final String introForBindMice = "Выберите номер окна чтобы связать его с девайсом. Для связывания щёлкните мышкой столько раз: ";
-    private static final String intro = "Панель настроек";
+    private static final String intro = "Для привязки мыши к монитору выберите монитор, затем кликните связываемой мышью несколько раз";
     MonologueBar monologue;
     JRadioButton[] jRadioButtons;
 
     int numberOfMice;
     ArrayList<PlayersFrame> playersFrames;
     DeviceBinder deviceBinder;
-    DeviceRecorder deviceRecorder;
+    DeviceCounter deviceRecorder;
 
     JPanel bindMicePanel = new JPanel();
     JPanel collageSizePanel = new JPanel();
     JPanel settingsPanel = new JPanel();
 
-    public WelcomePanel(int numberOfMice, ArrayList<PlayersFrame> playersFrames, DeviceBinder deviceBinder, DeviceRecorder deviceRecorder) {
+    public WelcomePanel(int numberOfMice, ArrayList<PlayersFrame> playersFrames, DeviceBinder deviceBinder, DeviceCounter deviceRecorder) {
         this.numberOfMice = numberOfMice;
         this.playersFrames = playersFrames;
         this.deviceBinder = deviceBinder;
@@ -36,7 +35,7 @@ public class WelcomePanel extends JPanel {
         settingsPanel.setLayout(new GridLayout(2, 1));
         settingsPanel.setBorder(BorderFactory.createTitledBorder("Настройки"));
         bindMicePanel.setLayout(new GridLayout(2, 1));
-        bindMicePanel.setBorder(BorderFactory.createTitledBorder("Связывание мышки и экрана"));
+        bindMicePanel.setBorder(BorderFactory.createTitledBorder("Связывание мыши и экрана"));
         collageSizePanel.setLayout(new GridLayout(1, 3));
         collageSizePanel.setBorder(BorderFactory.createTitledBorder("Размер коллажа"));
         settingsPanel.add(bindMicePanel);
@@ -68,6 +67,7 @@ public class WelcomePanel extends JPanel {
             int horizontalSize = horizontalBox.getSelectedIndex() + 3;
             CollageBuilder.collageHeight = verticalSize;
             CollageBuilder.collageWidth = horizontalSize;
+            CollageBuilder.collageSize = verticalSize * horizontalSize;
             monologue.setText("Размеры коллажа установлены");
         });
 

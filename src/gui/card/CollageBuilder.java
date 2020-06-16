@@ -14,9 +14,9 @@ public class CollageBuilder {
     private final File rootDirectory;
     private Collage collage;
 
-    public static int collageWidth = 3;
-    public static int collageHeight = 2;
-    public static final int collageSize = collageHeight * collageWidth;
+        public static int collageWidth = 4;
+        public static int collageHeight = 2;
+        public static int collageSize = collageHeight * collageWidth;
 
     public CollageBuilder(String directoryName, Collage collage) {
         this.collage = collage;
@@ -114,7 +114,8 @@ public class CollageBuilder {
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return true;
+            //e.printStackTrace();
         }
         return false;
     }
@@ -141,7 +142,7 @@ public class CollageBuilder {
         while (!cardsToCollage.isEmpty()) {
             Card card = cardsToCollage.pop();
             g.drawImage(card.picture, x, y, null);
-            collage.cardsInCollage[counter] = card;
+            //collage.cardsInCollage[counter] = card;
             counter++;
             x += Card.width;
             if(x >= result.getWidth()) {

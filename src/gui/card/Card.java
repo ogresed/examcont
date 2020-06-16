@@ -8,15 +8,15 @@ public class Card {
     public static int width = 200;
     public static int height = 150;
 
-    int xBound;
-    int yBound;
+		int xBound;
+		int yBound;
 
     int index;
 
     String prefix;
-    public String name;
-    public String description;
-    public BufferedImage picture;
+		public String name;
+		public String description;
+		public BufferedImage picture;
 
     public Card(String prefix, String name, String description, BufferedImage picture) {
         this.prefix = prefix;
@@ -26,8 +26,13 @@ public class Card {
     }
 
     public BufferedImage buildPicture(BufferedImage picture) {
-        int widthForPic = width - 2 * thickness;
-        int heightForPic = height - 2 * thickness - height/5;
+        int startPictureWidth = picture.getWidth();
+        int startPictureHeight = picture.getHeight();
+        double sizeRelative = (startPictureWidth * 1.0) / startPictureHeight;
+
+        int heightForPic = (4 * height) / 5 - thickness;
+        int widthForPic =  (int)(heightForPic * sizeRelative);
+
         BufferedImage buildImage = new BufferedImage(width,
                 height, picture.getType());
 
@@ -39,9 +44,14 @@ public class Card {
             }
         }
         g2d.setColor(Color.BLACK);
+        Font currentFont = g2d.getFont();
+        Font newFont = currentFont.deriveFont(height * 1.0F / 8);
+        g2d.setFont(newFont);
+        g2d.setFont(newFont);
+
         g2d.drawImage(picture, thickness, thickness, widthForPic, heightForPic, null);
-        int heightForName = 4*height/5 + height/10;
-        g2d.drawString("    " + name, 0, heightForName);
+        int heightForName = height - height / 30;
+        g2d.drawString(name, width / 8, heightForName);
         g2d.dispose();
         return buildImage;
     }
