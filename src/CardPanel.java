@@ -83,41 +83,54 @@ static int c;
         }
         State state = gameState.state;
         switch (state) {
+                // загадывает слово
             case Questioner:
-                onMakeWord(card);
+                onMakeWord(monitorIndex, card);
                 break;
+                // делает предположение
             case Suggester:
-                onSuggest(card);
+                onSuggest(monitorIndex ,card);
                 break;
+                // ответ на предположение
             case AllWithoutWhoAnswerer:
+                // задержка не кончилась
                 if(!gameState.delayIsUp(monitorIndex)) {
                     return;
                 }
+                // карта не подходит описанию
                 if(!gameState.guessedCardByDescription(card)) {
                     onWrongGuessedCard(card);
                     return;
                 }
+                //  водящий перехватил "контакт"
                 if(gameState.roundsGlobalState.getRole(monitorIndex) == Role.Questioner) {
                     boolean isMakeCard = onQuestionerGuessedWord(card);
+                    // его карта
                     if(isMakeCard) {
                         return;
                     }
+                    gameState.eventRecorder.answer(monitorIndex);
                     general.collageBuilder.usedCards.add(card.name);
                     BufferedImage collageImage = general.collageBuilder.createCollage(gameState.getPrefix());
                     for(PlayersFrame frame : general.playersFrames) {
                         frame.switchedPanel.cardPanel.setPicture(collageImage);
                     }
                 }
+                // игроки отгадали карту по описанию
                 else if(gameState.roundsGlobalState.getRole(monitorIndex) == Role.Answerer) {
+                    gameState.eventRecorder.answer(monitorIndex);
+                    // игроки выбрали карту водящего, новый раунд
                     if(card.name.equals(gameState.currentCard.name)) {
                         answererGuessedRootWord();
 
-                        general.collageBuilder.usedCards.add(card.name);
+                        //general.collageBuilder.usedCards.add(card.name);
+                        general.collageBuilder.clearUsedCards();
                         BufferedImage collageImage = general.collageBuilder.createCollage(gameState.getPrefix());
                         for(PlayersFrame frame : general.playersFrames) {
                             frame.switchedPanel.cardPanel.setPicture(collageImage);
                         }
                     }
+                    // игроки получают букву за угаданую карту
                     else {
                         answererGuessedSuggestedWord();
 
@@ -199,7 +212,8 @@ static int c;
         return false;
     }
 
-    private void onSuggest(Card card) {
+    private void onSuggest(int monitorIndex, Card card) {
+        gameState.eventRecorder.suggest(monitorIndex, card.name, gameState.getPrefix());
         gameState.suggestedCard = card;
         general.sendSuggester("Вы предположили, что было загадано: " + card.name +
                 "<br> Дождитесь, пока кто-нибудь не догадается, что вы имеете в виду");
@@ -209,7 +223,8 @@ static int c;
         gameState.state = State.AllWithoutWhoAnswerer;
     }
 
-    private void onMakeWord(Card card) {
+    private void onMakeWord(int monitorIndex, Card card) {
+        gameState.eventRecorder.ask(monitorIndex ,card.name);
         gameState.currentCard = card;
         gameState.numberOfLetters = 1;
 
@@ -223,6 +238,13 @@ static int c;
 
     private void endOfExam() {
         System.out.println("end of game");
+        gameState.eventRecorder.writeString("\nend of game\n");
+
+        for(PlayersFrame frame : general.playersFrames) {
+            frame.setVisible(false);
+        }
+        general.welcomeFrame.panel.monologue.setText("Эксперимент закончен!");
+        general.welcomeFrame.setVisible(true);
     }
 
     private String getIntroForAnswerer() {

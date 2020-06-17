@@ -3,6 +3,8 @@ import gui.view.MonologueBar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class WelcomePanel extends JPanel {
@@ -25,6 +27,15 @@ public class WelcomePanel extends JPanel {
         this.playersFrames = playersFrames;
         this.deviceBinder = deviceBinder;
         this.deviceRecorder = deviceRecorder;
+
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER && e.isControlDown() ) {
+                    System.exit(0);
+                }
+            }
+        });
 
         setLayout(new BorderLayout());
         monologue = new MonologueBar(300, 100, 15);

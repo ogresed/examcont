@@ -1,8 +1,10 @@
+import actionfix.EventRecorder;
 import gui.card.Collage;
 import gui.card.CollageBuilder;
 import utils.Constants;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -16,16 +18,22 @@ public class GeneralLogic {
     Collage collage;
     GameState gameState;
     ArrayList<PlayersFrame> playersFrames;
+    public WelcomeFrame welcomeFrame;
 
     public GeneralLogic(int numberOfPlayers, ManyMouseObserver mouseObserver,
-                        TreeMap<Integer, Integer> windowDevise, ArrayList<PlayersFrame> playersFrames) {
+                        TreeMap<Integer, Integer> windowDevise, ArrayList<PlayersFrame> playersFrames, WelcomeFrame welcomeFrame) {
         this.playersNumber = numberOfPlayers;
         this.mouseObserver = mouseObserver;
         this.windowDevise = windowDevise;
         this.playersFrames = playersFrames;
         this.collage = new Collage();
+        this.welcomeFrame = welcomeFrame;
         this.collageBuilder = new CollageBuilder(System.getProperty("user.dir") +
                 Constants.RESOURCES_PATH + "\\cards", collage);
+
+        CollageBuilder.write(System.getProperty("user.dir") +
+                Constants.RESOURCES_PATH + "\\cards");
+
         this.gameState = new GameState(numberOfPlayers);
         this.readyChecker = new ReadyChecker(numberOfPlayers, collageBuilder, gameState);
     }

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -14,7 +15,7 @@ public class CollageBuilder {
     private final File rootDirectory;
     private Collage collage;
 
-        public static int collageWidth = 4;
+        public static int collageWidth = 3;
         public static int collageHeight = 2;
         public static int collageSize = collageHeight * collageWidth;
 
@@ -105,6 +106,7 @@ public class CollageBuilder {
                 } catch(ArrayIndexOutOfBoundsException ignored) {}
                 Card card = cards.get(name);
                 if(card == null) {
+                    write(name);
                     addCard(prefix, currentPath, name, cardsDescription);
                 } else {
                     cardsToCollage.add(card);
@@ -120,11 +122,30 @@ public class CollageBuilder {
         return false;
     }
 
+    public static FileOutputStream fileOutputStream;
+    static{
+        try {
+            fileOutputStream = new FileOutputStream("123123");
+            fileOutputStream.write("2123\n".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void write(String string) {
+        try {
+            fileOutputStream.write((string + "\n").getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void addCard(String prefix, String currentPath, String name, String description) {
         String imageName = currentPath + "\\" + name + PNG;
         name = name.substring(2);
         try {
             BufferedImage image = ImageIO.read(new File(imageName));
+            //fileOutputStream.write((name).getBytes());
             Card card = new Card(prefix, name, description, image);
             cards.put(name, card);
             cardsToCollage.add(card);
@@ -141,6 +162,11 @@ public class CollageBuilder {
         int counter = 0;
         while (!cardsToCollage.isEmpty()) {
             Card card = cardsToCollage.pop();
+            try {
+                fileOutputStream.write(card.name.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             g.drawImage(card.picture, x, y, null);
             collage.cardsInCollage[counter] = card;
             counter++;
@@ -150,11 +176,6 @@ public class CollageBuilder {
                 y += Card.height;
             }
         }
-        try {
-            ImageIO.write(result, "png", new File("qwe.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return result;
     }
 
@@ -162,5 +183,6 @@ public class CollageBuilder {
         usedCards.clear();
     }
 }
+// todo: обдегчить работу с картами
 // todo: распределить процессорное время в пользу этого приложения или увеличить приоритет потока
 // solution: Thread.currentThread().setPriority(Thread.MAX_PRIORITY);

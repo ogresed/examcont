@@ -37,6 +37,7 @@ public class PlayersFrame extends JFrame {
     }
 
     PlayersFrame(int index, GeneralLogic generalLogic) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //base options
         //setExtendedState(JFrame.MAXIMIZED_BOTH);
         //setExtendedState(JFrame.MAXIMIZED_HORIZ);

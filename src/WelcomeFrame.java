@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class WelcomeFrame extends BaseFrame {
-    WelcomePanel panel;
+    public WelcomePanel panel;
     ArrayList<PlayersFrame> playersFrames;
     GeneralLogic general;
     DeviceCounter deviceRecorder;
@@ -42,7 +42,7 @@ public class WelcomeFrame extends BaseFrame {
         deviceBinder.setPanel(panel);
 
         // create general
-        general = new GeneralLogic(numberOfMouse, mouseObserver, deviceBinder.getWindowDevise(), playersFrames);
+        general = new GeneralLogic(numberOfMouse, mouseObserver, deviceBinder.getWindowDevise(), playersFrames, this);
         //create cards frames
         for(int i = 0; i < numberOfMouse; i++) {
             playersFrames.add(new PlayersFrame(i, general));
@@ -50,6 +50,8 @@ public class WelcomeFrame extends BaseFrame {
         //final settings
         setVisible(true);
         revalidate();
+        //
+
     }
     // todo: найти либу для работы СОМ-портом
     @Override

@@ -1,3 +1,4 @@
+import actionfix.EventRecorder;
 import gui.card.Card;
 
 public class GameState {
@@ -11,8 +12,10 @@ public class GameState {
 		Card suggestedCard;
 	public State state;
     RoundsGlobalState roundsGlobalState;
+    EventRecorder eventRecorder;
 
     GameState(int numberOfPlayers) {
+        this.eventRecorder = new EventRecorder("journal.txt");
         roundsGlobalState = new RoundsGlobalState(numberOfPlayers);
         state = State.Questioner;
         delays = new long[numberOfPlayers];
